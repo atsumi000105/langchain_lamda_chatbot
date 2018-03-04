@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "cacatio_chatbot-executor",
+    "name": "cacatio_chatbot",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "2hjh1yxje1",
+    "module": "bot"
+  }
+}

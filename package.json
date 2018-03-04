@@ -1,0 +1,28 @@
+{
+  "name": "@cacatio/chatbot",
+  "version": "0.1.0",
+  "description": "CatCat chatbot for Crypto Currency",
+  "main": "index.js",
+  "author": "katopz <katopz@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "claudia-bot-builder": "^3.0.0",
+    "huh": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.0.1",
+    "@types/node": "^9.3.0",
+    "jest": "^22.0.6",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "create": "claudia create --region us-east-1 --profile claudia --api-module bot",
+    "update": "claudia update --configure-fb-bot --profile claudia",
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "jest --watchAll",
+    "mon": "nodemon index.js",
+    "start": "node index.js"
+  }
+}

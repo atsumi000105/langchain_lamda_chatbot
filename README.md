@@ -33,6 +33,9 @@ Facebook Messenger -> AWS Lamda -> Firebase
   # And config webhook after this see : https://vimeo.com/170647056
   ```
 
-# TODO
+## TODO
 - [x] Connect Facebook Messenger with AWS lamda
 - [ ] Connect AWS lamda with Firebase
+
+## Failed
+It take too long to update lamda, so I give up ;(

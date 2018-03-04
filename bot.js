@@ -1,8 +1,28 @@
-var botBuilder = require('claudia-bot-builder'),
-    excuse = require('huh');
-
+var botBuilder = require('claudia-bot-builder');
+var excuse = require('huh');
 module.exports = botBuilder(function (request) {
-  return 'Thanks for sending ' + request.text  + 
-      '. Your message is very important to us, but ' + 
-      excuse.get();
+    return 'Thanks for sending ' + request.text +
+        '. Your message is very important to us, but ' +
+        excuse.get();
 });
+var admin = require('firebase-admin');
+exports.handler = function (event, context, callback) {
+    // https://stackoverflow.com/questions/37325775/amazon-lambda-to-firebase
+    context.callbackWaitsForEmptyEventLoop = false;
+    // In AWS lambda, it will cause double initialization.
+    if (admin.apps.length === 0) {
+        admin.initializeApp({
+            credential: admin.credential.cert({}),
+            databaseURL: 'https://catcatchatbot.firebaseio.com',
+        });
+    }
+    var ref = admin.database().ref("/foo");
+    ref.child('bar').set('hi').then(function (data) {
+        callback(null, data.val());
+        context.succeed();
+    }).catch(function (err) {
+        callback(err);
+        context.succeed();
+    });
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYm90LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiYm90LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLElBQU0sVUFBVSxHQUFHLE9BQU8sQ0FBQyxxQkFBcUIsQ0FBQyxDQUFBO0FBQ2pELElBQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQTtBQUU3QixNQUFNLENBQUMsT0FBTyxHQUFHLFVBQVUsQ0FBQyxVQUFDLE9BQU87SUFDbEMsTUFBTSxDQUFDLHFCQUFxQixHQUFHLE9BQU8sQ0FBQyxJQUFJO1FBQ3pDLDhDQUE4QztRQUM5QyxNQUFNLENBQUMsR0FBRyxFQUFFLENBQUE7QUFDaEIsQ0FBQyxDQUFDLENBQUE7QUFFRixJQUFNLEtBQUssR0FBRyxPQUFPLENBQUMsZ0JBQWdCLENBQUMsQ0FBQTtBQUN2QyxPQUFPLENBQUMsT0FBTyxHQUFHLFVBQUMsS0FBSyxFQUFFLE9BQU8sRUFBRSxRQUFRO0lBQ3pDLHlFQUF5RTtJQUN6RSxPQUFPLENBQUMsOEJBQThCLEdBQUcsS0FBSyxDQUFBO0lBRTlDLHNEQUFzRDtJQUN0RCxFQUFFLENBQUMsQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLE1BQU0sS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDO1FBQzVCLEtBQUssQ0FBQyxhQUFhLENBQUM7WUFDbEIsVUFBVSxFQUFFLEtBQUssQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLEVBQUUsQ0FBQztZQUNyQyxXQUFXLEVBQUUsc0NBQXNDO1NBQ3BELENBQUMsQ0FBQTtJQUNKLENBQUM7SUFFRCxJQUFNLEdBQUcsR0FBRyxLQUFLLENBQUMsUUFBUSxFQUFFLENBQUMsR0FBRyxDQUFDLE1BQU0sQ0FBQyxDQUFBO0lBQ3hDLEdBQUcsQ0FBQyxLQUFLLENBQUMsS0FBSyxDQUFDLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxDQUFDLElBQUksQ0FBQyxVQUFBLElBQUk7UUFDbEMsUUFBUSxDQUFDLElBQUksRUFBRSxJQUFJLENBQUMsR0FBRyxFQUFFLENBQUMsQ0FBQTtRQUMxQixPQUFPLENBQUMsT0FBTyxFQUFFLENBQUE7SUFDbkIsQ0FBQyxDQUFDLENBQUMsS0FBSyxDQUFDLFVBQUEsR0FBRztRQUNWLFFBQVEsQ0FBQyxHQUFHLENBQUMsQ0FBQTtRQUNiLE9BQU8sQ0FBQyxPQUFPLEVBQUUsQ0FBQTtJQUNuQixDQUFDLENBQUMsQ0FBQTtBQUNKLENBQUMsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImNvbnN0IGJvdEJ1aWxkZXIgPSByZXF1aXJlKCdjbGF1ZGlhLWJvdC1idWlsZGVyJylcbmNvbnN0IGV4Y3VzZSA9IHJlcXVpcmUoJ2h1aCcpXG5cbm1vZHVsZS5leHBvcnRzID0gYm90QnVpbGRlcigocmVxdWVzdCkgPT4ge1xuICByZXR1cm4gJ1RoYW5rcyBmb3Igc2VuZGluZyAnICsgcmVxdWVzdC50ZXh0ICtcbiAgICAnLiBZb3VyIG1lc3NhZ2UgaXMgdmVyeSBpbXBvcnRhbnQgdG8gdXMsIGJ1dCAnICtcbiAgICBleGN1c2UuZ2V0KClcbn0pXG5cbmNvbnN0IGFkbWluID0gcmVxdWlyZSgnZmlyZWJhc2UtYWRtaW4nKVxuZXhwb3J0cy5oYW5kbGVyID0gKGV2ZW50LCBjb250ZXh0LCBjYWxsYmFjaykgPT4ge1xuICAvLyBodHRwczovL3N0YWNrb3ZlcmZsb3cuY29tL3F1ZXN0aW9ucy8zNzMyNTc3NS9hbWF6b24tbGFtYmRhLXRvLWZpcmViYXNlXG4gIGNvbnRleHQuY2FsbGJhY2tXYWl0c0ZvckVtcHR5RXZlbnRMb29wID0gZmFsc2VcblxuICAvLyBJbiBBV1MgbGFtYmRhLCBpdCB3aWxsIGNhdXNlIGRvdWJsZSBpbml0aWFsaXphdGlvbi5cbiAgaWYgKGFkbWluLmFwcHMubGVuZ3RoID09PSAwKSB7XG4gICAgYWRtaW4uaW5pdGlhbGl6ZUFwcCh7XG4gICAgICBjcmVkZW50aWFsOiBhZG1pbi5jcmVkZW50aWFsLmNlcnQoe30pLFxuICAgICAgZGF0YWJhc2VVUkw6ICdodHRwczovL2NhdGNhdGNoYXRib3QuZmlyZWJhc2Vpby5jb20nLFxuICAgIH0pXG4gIH1cblxuICBjb25zdCByZWYgPSBhZG1pbi5kYXRhYmFzZSgpLnJlZihgL2Zvb2ApXG4gIHJlZi5jaGlsZCgnYmFyJykuc2V0KCdoaScpLnRoZW4oZGF0YSA9PiB7XG4gICAgY2FsbGJhY2sobnVsbCwgZGF0YS52YWwoKSlcbiAgICBjb250ZXh0LnN1Y2NlZWQoKVxuICB9KS5jYXRjaChlcnIgPT4ge1xuICAgIGNhbGxiYWNrKGVycilcbiAgICBjb250ZXh0LnN1Y2NlZWQoKVxuICB9KVxufSJdfQ==
